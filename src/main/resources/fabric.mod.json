@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "sky-bubble",
+	"version": "${version}",
+	"name": "SkyBubble",
+	"description": "Sky Bubble that brings Roblox-style chat bubbles to Minecraft",
+	"authors": [
+		"Eleeter"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": ""
+	},
+	"license": "",
+	"icon": "assets/sky-bubble/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"eleeter.skybubble.SkyBubble"
+		],
+		"client": [
+			"eleeter.skybubble.client.SkyBubbleClient"
+		]
+	},
+	"mixins": [
+		"sky-bubble.mixins.json",
+		{
+			"config": "sky-bubble.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
