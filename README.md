@@ -4,8 +4,7 @@ SkyBubble adds floating chat bubbles above player heads in Minecraft, so you can
 Instead of relying on Minecraft's blocky bitmap font, SkyBubble renders text using a MSDF (multi-channel signed distance field) font renderer. This means your chat bubbles stay crisp and readable at any distance or zoom level, instead of looking pixelated or blurry like vanilla text does when scaled in 3D space.
 
 <p align="center">
-  <img src="https://cdn.modrinth.com/data/cached_images/29f51fc098c2fa24d4a85ce7afc8eb90e6533288_0.webp" width="400">
-  <img src="https://cdn.modrinth.com/data/cached_images/25a243cb24a9dead5e59f388861c1dfded0526ea.png" width="430">
+  <img src="https://cdn.modrinth.com/data/cached_images/29f51fc098c2fa24d4a85ce7afc8eb90e6533288_0.webp" width="80%">
 </p>
 
 ## How it works
