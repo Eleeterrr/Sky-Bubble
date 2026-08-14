@@ -69,7 +69,9 @@ public class ChatBubble
             {
                 result.append('\n');
                 lineLen = 0;
-            } else if (lineLen > 0) result.append(' ');
+            } else if (lineLen > 0)
+            {
+                result.append(' ');
             lineLen++;
         }
         result.append(word);

@@ -10,6 +10,7 @@ group = project.maven_group
 repositories {
     mavenCentral()
     flatDir { dirs 'libs' }
+    maven { url 'https://jitpack.io' }
 }
 
 loom {
@@ -32,7 +33,7 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-    shade files('libs/elfontlib.jar')
+    shade 'com.github.Eleeterrr:ElFontLib:main-SNAPSHOT'
     shade "com.google.code.gson:gson:2.11.0"
 }
 

@@ -8,7 +8,7 @@ import eleeter.skybubble.client.render.EmojiPanelRenderer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.narration.NarratedElementType
+import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 

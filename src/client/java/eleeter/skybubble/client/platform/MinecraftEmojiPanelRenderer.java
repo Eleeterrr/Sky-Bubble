@@ -2,6 +2,7 @@ package eleeter.skybubble.client.platform;
 
 import eleeter.elfontlib.emoji.EmojiGlyph;
 import eleeter.skybubble.client.platform.loaders.EmojiAtlasLoader;
+import eleeter.skybubble.client.render.EmojiPanelRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;

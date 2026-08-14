@@ -1,7 +1,6 @@
 package eleeter.skybubble.client.platform;
 
 import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.BlendFunction;
@@ -130,7 +129,8 @@ public class MinecraftMsdfTextRenderer implements TextRenderer
 
     private static GpuBuffer buildGpuBuffer(BufferBuilder bufferBuilder, ByteBufferBuilder byteBufferBuilder, String label)
     {
-        MeshData meshData = bufferBuilder.buildOrThrow();
+        /* My elfont library uses the same class name "MeshData", so we can't import both classes at once */
+        com.mojang.blaze3d.vertex.MeshData meshData = bufferBuilder.buildOrThrow();
         try
         {
             return RenderSystem.getDevice().createBuffer(() -> label, GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
