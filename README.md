@@ -35,6 +35,9 @@ Only the viewer needs SkyBubble installed to see bubbles. If you have the mod, y
 * **No Chat Reports Mod**: Currently incompatible due to both mods injecting overlapping chat-related code. Compatibility is planned for a future SkyBubble update.
 
 ---
+## Heads Up
+Porting to 26.2 was done with help from AI, not by me directly. The original mod was handwritten by me and friends, built on 1.20.4.
+
 
 ## Why SkyBubble?
 
