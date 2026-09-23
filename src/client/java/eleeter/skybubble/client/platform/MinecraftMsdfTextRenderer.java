@@ -1,17 +1,17 @@
 package eleeter.skybubble.client.platform;
 
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.CompareOp;
-import com.mojang.blaze3d.systems.RenderPass;
+import com.mojang.renderpearl.api.pipeline.CompareOp;
+import com.mojang.renderpearl.api.commands.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTextureView;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BindGroupLayouts;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.Identifier;
@@ -36,18 +37,20 @@ public class MinecraftMsdfTextRenderer implements TextRenderer
     private boolean ready = true;
 
 
-    private static final RenderPipeline PIPELINE = RenderPipeline.builder()
+    private static final RenderPipeline PIPELINE = RenderPipelines.register(RenderPipeline.builder()
             .withLocation(Identifier.fromNamespaceAndPath("sky-bubble", "pipeline/msdf_text"))
             .withVertexShader(Identifier.fromNamespaceAndPath("sky-bubble", "core/msdf"))
             .withFragmentShader(Identifier.fromNamespaceAndPath("sky-bubble", "core/msdf"))
-            .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+            .withBindGroupLayout(BindGroupLayouts.GLOBALS)
+            .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+            .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
             .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
             .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
             .withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, false))
             .withCull(false)
             .withVertexBinding(0, DefaultVertexFormat.POSITION_TEX_COLOR)
             .withPrimitiveTopology(PrimitiveTopology.TRIANGLES)
-            .build();
+            .build());
 
 
     public void setShader(Object shaderProgram)
@@ -114,10 +117,9 @@ public class MinecraftMsdfTextRenderer implements TextRenderer
 
         try
         {
-            renderPass.setPipeline(PIPELINE);
-            RenderSystem.bindDefaultUniforms(renderPass);
+            renderPass.setPipeline(RenderSystem.getCompiledPipeline(PIPELINE));            RenderSystem.bindDefaultUniforms(renderPass);
             renderPass.setUniform("DynamicTransforms", dynamicTransforms);
-            renderPass.bindTexture("Sampler0", fontAtlas.getTextureView(), fontAtlas.getSampler());
+            renderPass.setUniform("Sampler0", fontAtlas.getTextureView(), fontAtlas.getSampler());
             renderPass.setVertexBuffer(0, vertexBuffer.slice());
             renderPass.draw(vertexCount, 1, 0, 0);
         } finally

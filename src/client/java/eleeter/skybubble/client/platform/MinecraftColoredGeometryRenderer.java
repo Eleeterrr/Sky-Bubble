@@ -1,17 +1,17 @@
 package eleeter.skybubble.client.platform;
 
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.CompareOp;
-import com.mojang.blaze3d.systems.RenderPass;
+import com.mojang.renderpearl.api.pipeline.CompareOp;
+import com.mojang.renderpearl.api.commands.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTextureView;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BindGroupLayouts;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import org.joml.Matrix4f;
 
@@ -29,17 +30,19 @@ import org.joml.Matrix4f;
 public class MinecraftColoredGeometryRenderer implements ColoredGeometryRenderer
 {
 
-    private static final RenderPipeline PIPELINE = RenderPipeline.builder()
+    private static final RenderPipeline PIPELINE = RenderPipelines.register(RenderPipeline.builder()
             .withLocation(Identifier.fromNamespaceAndPath("sky-bubble", "pipeline/colored_geometry"))
             .withVertexShader(Identifier.fromNamespaceAndPath("sky-bubble", "core/position_color"))
             .withFragmentShader(Identifier.fromNamespaceAndPath("sky-bubble", "core/position_color"))
-            .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+            .withBindGroupLayout(BindGroupLayouts.GLOBALS)
+            .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+            .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
             .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
             .withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
             .withCull(false)
             .withVertexBinding(0, DefaultVertexFormat.POSITION_COLOR)
             .withPrimitiveTopology(PrimitiveTopology.TRIANGLES)
-            .build();
+            .build());
 
     @Override
     public void draw(Matrix4f transform, float[] xyzrgba)
@@ -75,8 +78,7 @@ public class MinecraftColoredGeometryRenderer implements ColoredGeometryRenderer
 
         try
         {
-            renderPass.setPipeline(PIPELINE);
-            RenderSystem.bindDefaultUniforms(renderPass);
+            renderPass.setPipeline(RenderSystem.getCompiledPipeline(PIPELINE));            RenderSystem.bindDefaultUniforms(renderPass);
             renderPass.setUniform("DynamicTransforms", dynamicTransforms);
             renderPass.setVertexBuffer(0, vertexBuffer.slice());
             renderPass.draw(vertexCount, 1, 0, 0);

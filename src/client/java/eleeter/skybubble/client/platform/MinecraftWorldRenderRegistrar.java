@@ -18,6 +18,6 @@ public class MinecraftWorldRenderRegistrar implements WorldRenderRegistrar
     @Override
     public void onFrameAfterTranslucent(Consumer<FrameContext> callback)
     {
-        LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN.register(ctx -> callback.accept(new MinecraftFrameContext(ctx)));
+        LevelRenderEvents.END_MAIN.register(ctx -> callback.accept(new MinecraftFrameContext(ctx)));
     }
 }

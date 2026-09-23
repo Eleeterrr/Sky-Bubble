@@ -37,13 +37,13 @@ public class MinecraftTransformStack implements TransformStack
     @Override
     public void rotate(Quaternionf rotation)
     {
-        matrixStack.mulPose(rotation);
+        matrixStack.rotate(rotation);
     }
 
     @Override
     public void rotateY180()
     {
-        matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+        matrixStack.rotate(Axis.YP.rotationDegrees(180.0F));
     }
 
     @Override
